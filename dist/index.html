@@ -3,10 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wbpack Exercise</title>
-    <link rel="stylesheet" href="./style.css">
-<script defer src="bund.js"></script></head>
+    <title>To-Do List</title>
+<script defer src="bundle503f684e22efd2515d4e.js"></script></head>
 <body>
-    <h1>Hello webpack!</h1>
+    <div class="container">
+        <span class="headline">
+            <h1>Today's To Do</h1>
+            <img id="refreshSvg" alt="refresh">
+        </span>
+        <form id="todoForm" action="#">
+            <input type="text" placeholder="Add to your list..." maxlength="50" minlength="1">
+        </form>
+        <ul id="task-list"></ul>
+        <button id="clearCompleted">Clear all completed</button>
+    </div>
 </body>
 </html>
