@@ -20,8 +20,8 @@ const renderTasks = () => {
 };
 
 const int = () => {
-    document.getElementById('refreshSvg').innerHTML = refresh;
-    renderTasks();
+  document.getElementById('refreshSvg').innerHTML = refresh;
+  renderTasks();
 };
 
 export default int;
