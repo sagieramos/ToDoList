@@ -1,12 +1,11 @@
 import TaskManager from "./modules/renderPage";
+import refreshImg from "./assets/refresh.svg"
 
 const taskManager = new TaskManager();
 
 const todoForm = document.getElementById('todoForm');
-const clearCompletedButton = document.getElementById('clearCompleted');
-
-console.log('Todo form:', todoForm);
-console.log('Clear completed button:', clearCompletedButton);
+const refresh = document.getElementById('refreshSvg');
+refresh.src = refreshImg
 
 todoForm.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -29,11 +28,7 @@ window.addEventListener('click', (e) => {
     console.log(target);
     if (target.matches('#clearCompleted')) {
         taskManager.clearCompleted();
- /*    console.log('Clear completed button clicked '+ target);
-    taskManager.tasks = taskManager.tasks.filter(task => !task.completed);
-    taskManager.updateTaskIndexes();
-    taskManager.renderTasks(); */
-    } else if (target.matches('input[type="checkbox"]')) {
-        taskManager.checkbox(target);
+    } else if (target.matches('.completed-checkbox')) {
+        taskManager. updateTaskCompletion(target);
     }
 });

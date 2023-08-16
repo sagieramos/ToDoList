@@ -1,4 +1,4 @@
-import { treeDots, refresh } from './svg.js';
+import threedots from '../assets/threedot.svg'
 
 import '../styles/style.css';
 
@@ -9,9 +9,8 @@ const createTaskElement = (task) => {
       <input type="checkbox" class="completed-checkbox" ${task.completed ? 'checked' : ''}>
       <span class="index">${task.index}.</span>
       <span class="task-description">${task.description}</span>
-      <button class="treeDots">${treeDots}</button>
+      <img class="treeDots" src="${threedots}" alt="">
   `;
-  
   return taskElement;
 };
 class TaskManager {
@@ -43,15 +42,13 @@ class TaskManager {
         this.saveTasksToLocalStorage();
     }
     
-
-
-    checkbox (target) {
-      if (target.checked) {
-        target.parentNode.classList.add('completed');
-      } else {
-        target.parentNode.classList.remove('completed');
-      }
-    }
+    updateTaskCompletion(target) {
+      const targetClass = target.className;
+      const targetIndex = [...document.querySelectorAll(`.${targetClass}`)].indexOf(target);
+      this.tasks[targetIndex].completed = target.checked;
+      this.saveTasksToLocalStorage();
+      this.renderTasks();
+  }
     
     clearCompleted() {
       const completedCheckboxes = [...document.querySelectorAll('.completed-checkbox')];
@@ -74,15 +71,10 @@ class TaskManager {
     
     deleteTask(index) {
         this.tasks.splice(index, 1);
-        this.updateTaskIndexes();
         this.renderTasks();
     }
     
-    updateTaskCompletion(index, completed) {
-        this.tasks[index].completed = completed;
-        this.saveTasksToLocalStorage();
-        this.renderTasks();
-    }
+
 }
 
 export default TaskManager;
