@@ -11,7 +11,7 @@ refresh.src = refreshImg;
 
 const handleFormSubmission = (e) => {
   e.preventDefault();
-  const target = e.target;
+  const { target } = e;
 
   if (target.matches('#todoForm')) {
     const input = document.querySelector('#enter-description');
@@ -25,24 +25,26 @@ const handleFormSubmission = (e) => {
     const input = document.querySelector('#edit-input');
     taskManager.updateTaskDescription(input.value.trim());
   }
-}
+};
 
 const handleClicks = (e) => {
-  const target = e.target;
-
+  const { target } = e;
   if (target.matches('#clearCompleted')) {
     taskManager.clearCompleted();
   } else if (target.matches('.completed-checkbox')) {
     taskManager.updateTaskCompletion(target);
+  } else if (target.matches('#treeDots-delete')) {
+    taskManager.deleteTask();
+    editInput = true;
+  } else if (target.matches('*:not(#edit-input)') && editInput) {
+    taskManager.renderTasks();
+    editInput = false;
   } else if (target.matches('.treeDots')) {
     const index = [...document.querySelectorAll('.treeDots')].indexOf(target);
     target.src = deleteImg;
     target.id = 'treeDots-delete';
     taskManager.getIndex(index);
     editInput = true;
-  } else if (editInput && target.matches('*:not(#edit-input)')) {
-    taskManager.renderTasks();
-    editInput = false;
   } else if (target.matches('.delete-task')) {
     taskManager.deleteTask();
     while (menu.firstChild) {
@@ -53,6 +55,6 @@ const handleClicks = (e) => {
     const index = [...document.querySelectorAll('.task-description')].indexOf(target);
     target.innerHTML = taskManager.editDescription(index);
   }
-}
+};
 
-export { handleFormSubmission, handleClicks }
+export { handleFormSubmission, handleClicks };
