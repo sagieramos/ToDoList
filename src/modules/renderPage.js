@@ -5,7 +5,6 @@ import '../styles/style.css';
 const createTaskElement = (task) => {
   const taskElement = document.createElement('li');
   taskElement.className = `task ${task.completed ? 'completed' : ''}`;
-  taskElement.draggable = true;
   taskElement.innerHTML = `
       <input type="checkbox" class="completed-checkbox" ${task.completed ? 'checked' : ''}>
       <span class="task-description">${task.index}. ${task.description}</span>
@@ -72,7 +71,7 @@ class TaskManager {
     return `
       <form id="todo-edit" action="#">
       <textarea id="edit-input" cols="30" rows="10" id="edit-input" name="edit" type="text" maxlength="500" minlength="1" required>${this.tasks[index].description}</textarea>
-      <button id="confirm-edit">Confirm</button>
+      <button id="confirm-edit">Submit</button>
       </form>
     `;
   }

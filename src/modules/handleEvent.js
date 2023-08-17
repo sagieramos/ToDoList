@@ -29,6 +29,11 @@ const handleFormSubmission = (e) => {
 
 const handleClicks = (e) => {
   const { target } = e;
+  if (target.matches('#confirm-edit')) {
+    e.preventDefault();
+    const input = document.querySelector('#edit-input');
+    taskManager.updateTaskDescription(input.value.trim());
+  }
   if (target.matches('#clearCompleted')) {
     taskManager.clearCompleted();
   } else if (target.matches('.completed-checkbox')) {
