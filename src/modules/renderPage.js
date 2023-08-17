@@ -1,27 +1,94 @@
-import { treeDots, refresh } from './svg.js';
+import threedots from '../assets/threedot.svg';
 
-const tasks = [
-  { description: 'Come to Nigeria', completed: false, index: 1 },
-  { description: 'Read shell and Linux', completed: true, index: 2 },
-  { description: 'Go, buy a drink', completed: false, index: 3 },
-];
-const taskList = document.getElementById('task-list');
+import '../styles/style.css';
 
-const renderTasks = () => {
-  taskList.innerHTML = tasks
-    .map((task) => `
-            <li class="task ${task.completed ? 'completed' : ''}">
-                <input type="checkbox" class="completed-checkbox" ${task.completed ? 'checked' : ''}>
-                <span class="task-description">${task.description}</span>
-                <button class="treeDots">${treeDots}</button>
-            </li>
-        `)
-    .join('');
+const createTaskElement = (task) => {
+  const taskElement = document.createElement('li');
+  taskElement.className = `task ${task.completed ? 'completed' : ''}`;
+  taskElement.innerHTML = `
+      <input type="checkbox" class="completed-checkbox" ${task.completed ? 'checked' : ''}>
+      <span class="task-description">${task.index}. ${task.description}</span>
+      <img class="treeDots" src="${threedots}" alt="">
+  `;
+  return taskElement;
 };
+class TaskManager {
+  constructor(container) {
+    this.tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    this.taskList = document.querySelector(`${container}`);
+    this.activeIndex = null;
+    this.renderTasks();
+  }
 
-const int = () => {
-  document.getElementById('refreshSvg').innerHTML = refresh;
-  renderTasks();
-};
+  saveTasksToLocalStorage() {
+    localStorage.setItem('tasks', JSON.stringify(this.tasks));
+  }
 
-export default int;
+  updateTaskIndexes() {
+    this.tasks.forEach((task, index) => {
+      task.index = index + 1;
+    });
+  }
+
+  renderTasks() {
+    this.updateTaskIndexes();
+    this.taskList.innerHTML = '';
+
+    this.tasks.forEach((task) => {
+      const taskElement = createTaskElement(task);
+      this.taskList.appendChild(taskElement);
+    });
+
+    this.saveTasksToLocalStorage();
+  }
+
+  updateTaskCompletion(target) {
+    const targetClass = target.className;
+    const targetIndex = [...document.querySelectorAll(`.${targetClass}`)].indexOf(target);
+    this.tasks[targetIndex].completed = target.checked;
+    this.saveTasksToLocalStorage();
+    this.renderTasks();
+  }
+
+  updateTaskDescription(value) {
+    this.tasks[this.activeIndex].description = value;
+    this.renderTasks();
+  }
+
+  clearCompleted() {
+    const completedCheckboxes = [...document.querySelectorAll('.completed-checkbox')];
+    const newTasks = this.tasks.filter((task, index) => !completedCheckboxes[index].checked);
+    this.tasks = newTasks;
+    this.renderTasks();
+  }
+
+  getIndex(index) {
+    this.activeIndex = index;
+  }
+
+  editDescription(index) {
+    this.activeIndex = index;
+    return `
+      <form id="todo-edit" action="#">
+      <input id="edit-input" name="edit" type="text" maxlength="50" minlength="1" placeholder="${index + 1}. ${this.tasks[index].description}" required></input>
+      </form>
+    `;
+  }
+
+  addTask(description) {
+    const newTask = {
+      description,
+      completed: false,
+      index: this.tasks.length + 1,
+    };
+    this.tasks.push(newTask);
+    this.renderTasks();
+  }
+
+  deleteTask() {
+    this.tasks.splice(this.activeIndex, 1);
+    this.renderTasks();
+  }
+}
+
+export default TaskManager;

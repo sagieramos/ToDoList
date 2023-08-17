@@ -4,30 +4,31 @@
 
 <div align="center">
 
-  <img src="projectOverview.jpeg" alt="overview" width="auto"  height="auto" />
+  <img src="screenshoot1.png" alt="overview" width="auto"  height="auto" />
+  <img src="screenshoot2.png" alt="overview" width="auto"  height="auto" />
   <br/>
 
-  <h3><b>Portfolio</b></h3>
+  <h3><b>To-DoList</b></h3>
 
 </div>
 
-
 # 📗 Table of Contents
 
-- [📖 About the Project](#about-project)
-  - [🛠 Built With](#built-with)
-    - [Key Features](#key-features)
-- [💻 Getting Started](#getting-started)
-  - [Setup](#setup)
-  - [Prerequisites](#prerequisites)
-  - [Usage](#usage)
-- [👥 Authors](#authors)
-- [🔭 Future Features](#future-features)
-- [🤝 Contributing](#contributing)
-- [⭐️ Show your support](#support)
-- [🙏 Acknowledgements](#acknowledgements)
-- [❓ FAQ](#faq)
-- [📝 License](#license)
+- [📗 Table of Contents](#-table-of-contents)
+- [📖 Fullstack Development ](#-fullstack-development-)
+  - [🛠  Built With ](#--built-with-)
+    - [Key Features ](#key-features-)
+  - [💻 Getting Started ](#-getting-started-)
+    - [Prerequisites](#prerequisites)
+    - [Setup](#setup)
+    - [Usage](#usage)
+  - [👥 Authors ](#-authors-)
+  - [🔭 Future Features ](#-future-features-)
+  - [🤝 Contributing ](#-contributing-)
+  - [⭐️ Show your support ](#️-show-your-support-)
+  - [🙏 Acknowledgments ](#-acknowledgments-)
+  - [❓ FAQ ](#-faq-)
+  - [📝 License ](#-license-)
 
 
 # 📖 Fullstack Development <a name="To-Do List"></a>
@@ -35,12 +36,17 @@
 **To-Do list* a simple HTML list of To Do tasks. 
 
 ## 🛠  Built With <a name="built-with"></a>
-
-
+- HTML
+- CSS
+- JavaScript
 ### Key Features <a name="key-features"></a>
+- implement a function for adding a new task (add a new element to the array).
+- Implement a function for deleting a task (remove an element from the array).
+- Implement a function for editing task descriptions.
+- By default new tasks have the property completed set to false and the property index set to the value of the new array length (i.e. if you're adding a 5th task to the list, the index of that task is equal to 5).
+- Deleting a task update all remaining items' indexes, so they represent the current list order and are unique(i.e. if you're deleting the first task index 1 from the list, the index of the next task(2) is set to 1).
+- All changes to the To Do List is saved in local storage.
 
-
-  
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## 💻 Getting Started <a name="getting-started"></a>
@@ -54,14 +60,14 @@ In order to run this project you need:
 
 Clone this repository to your desired folder:
 ```sh
-  git clone https://github.com/sagieramos/webpack $HOME
+  git clone https://github.com/sagieramos/ToDoList $HOME
 ```
 ### Usage
 
 To run the project, execute the following command:
 
 ```sh
-  cd $HOME/webpack
+  cd $HOME/ToDoList
   npm install
   npm run build
   npm run dev
@@ -105,14 +111,14 @@ If you like this project, please consider subscribing to my GitHub account for u
 
 
 ## 🙏 Acknowledgments <a name="acknowledgements"></a>
-- Jehovah.
+- Jehovah God
 - [Microverse Team](https://www.microverse.org/).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## ❓ FAQ <a name="faq"></a>
 
-- **Can I run this project with a Docker?**
+- **Can I run this project run on Docker?**
 
   - Yes
 

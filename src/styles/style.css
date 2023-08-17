@@ -14,11 +14,16 @@ body {
 
 .container {
   max-width: 600px;
+  min-width: 300px;
+  width: 86%;
   margin: 60px auto;
   padding: 0 12px;
   background-color: #fff;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .headline {
@@ -56,10 +61,6 @@ li.task {
   cursor: pointer;
 }
 
-.treeDots svg {
-  fill: #8b8a8a;
-}
-
 li.task.completed {
   text-decoration: line-through;
 }
@@ -81,9 +82,10 @@ input {
   background: none;
   border: none;
   text-align: center;
-  width: 100%;
   padding: 10px 0;
   color: #8b8a8a;
+  cursor: pointer;
+  margin: 0 auto;
 }
 
 input::placeholder {

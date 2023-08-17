@@ -13,31 +13,89 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _svg_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./svg.js */ "./src/modules/svg.js");
+/* harmony import */ var _styles_style_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styles/style.css */ "./src/styles/style.css");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 
-var tasks = [{
-  description: 'Come to Nigeria',
-  completed: false,
-  index: 1
-}, {
-  description: 'Read shell and Linux',
-  completed: true,
-  index: 2
-}, {
-  description: 'Go, buy a drink',
-  completed: false,
-  index: 3
-}];
-var taskList = document.getElementById('task-list');
-var renderTasks = function renderTasks() {
-  taskList.innerHTML = tasks.map(function (task) {
-    return "\n            <li class=\"task ".concat(task.completed ? 'completed' : '', "\">\n                <input type=\"checkbox\" class=\"completed-checkbox\" ").concat(task.completed ? 'checked' : '', ">\n                <span class=\"task-description\">").concat(task.description, "</span>\n                <button class=\"treeDots\">").concat(_svg_js__WEBPACK_IMPORTED_MODULE_0__.treeDots, "</button>\n            </li>\n        ");
-  }).join('');
+
+var createTaskElement = function createTaskElement(task) {
+  var taskElement = document.createElement('li');
+  taskElement.className = "task ".concat(task.completed ? 'completed' : '');
+  taskElement.innerHTML = "\n      <input type=\"checkbox\" class=\"completed-checkbox\" ".concat(task.completed ? 'checked' : '', ">\n      <span class=\"task-description\">").concat(task.description, "</span>\n      <button class=\"treeDots\">").concat(_svg_js__WEBPACK_IMPORTED_MODULE_0__.treeDots, "</button>\n  ");
+  return taskElement;
 };
-var _int = function _int() {
-  document.getElementById('refreshSvg').innerHTML = _svg_js__WEBPACK_IMPORTED_MODULE_0__.refresh;
-  renderTasks();
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_int);
+var TaskManager = /*#__PURE__*/function () {
+  function TaskManager() {
+    _classCallCheck(this, TaskManager);
+    this.tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    this.taskList = document.getElementById('task-list');
+    this.renderTasks();
+  }
+  _createClass(TaskManager, [{
+    key: "saveTasksToLocalStorage",
+    value: function saveTasksToLocalStorage() {
+      localStorage.setItem('tasks', JSON.stringify(this.tasks));
+    }
+  }, {
+    key: "renderTasks",
+    value: function renderTasks() {
+      var _this = this;
+      this.taskList.innerHTML = '';
+      this.tasks.forEach(function (task, index) {
+        var taskElement = createTaskElement(task, index);
+        _this.taskList.appendChild(taskElement);
+      });
+      this.saveTasksToLocalStorage();
+    }
+  }, {
+    key: "updateTaskIndexes",
+    value: function updateTaskIndexes() {
+      this.tasks.forEach(function (task, index) {
+        task.index = index + 1;
+      });
+    }
+  }, {
+    key: "checkbox",
+    value: function checkbox(target) {
+      if (target.checked) {
+        target.parentNode.classList.add('completed');
+      } else {
+        target.parentNode.classList.add('completed');
+      }
+    }
+  }, {
+    key: "addTask",
+    value: function addTask(description) {
+      var newTask = {
+        description: description,
+        completed: false,
+        index: this.tasks.length + 1
+      };
+      this.tasks.push(newTask);
+      this.renderTasks();
+    }
+  }, {
+    key: "deleteTask",
+    value: function deleteTask(index) {
+      this.tasks.splice(index, 1);
+      this.updateTaskIndexes();
+      this.renderTasks();
+    }
+  }, {
+    key: "updateTaskCompletion",
+    value: function updateTaskCompletion(index, completed) {
+      this.tasks[index].completed = completed;
+      this.saveTasksToLocalStorage();
+      this.renderTasks();
+    }
+  }]);
+  return TaskManager;
+}();
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (TaskManager);
 
 /***/ }),
 
@@ -695,13 +753,39 @@ var __webpack_exports__ = {};
   !*** ./src/index.js ***!
   \**********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _styles_style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./styles/style.css */ "./src/styles/style.css");
-/* harmony import */ var _modules_renderPage_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/renderPage.js */ "./src/modules/renderPage.js");
+/* harmony import */ var _modules_renderPage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/renderPage */ "./src/modules/renderPage.js");
 
-
-document.addEventListener('DOMContentLoaded', _modules_renderPage_js__WEBPACK_IMPORTED_MODULE_1__["default"]);
+var taskManager = new _modules_renderPage__WEBPACK_IMPORTED_MODULE_0__["default"]();
+var todoForm = document.getElementById('todoForm');
+var clearCompletedButton = document.getElementById('clearCompleted');
+console.log('Todo form:', todoForm);
+console.log('Clear completed button:', clearCompletedButton);
+todoForm.addEventListener('submit', function (event) {
+  event.preventDefault();
+  var input = todoForm.querySelector('input[type="text"]');
+  var description = input.value.trim();
+  if (description !== '') {
+    taskManager.addTask(description);
+    input.value = '';
+  }
+});
+window.addEventListener('click', function (e) {
+  var target = e.target;
+  console.log(target);
+  if (target.matches('#clearCompleted')) {
+    console.log('Clear completed button clicked ' + target);
+    taskManager.tasks = taskManager.tasks.filter(function (task) {
+      return !task.completed;
+    });
+    taskManager.updateTaskIndexes();
+    taskManager.renderTasks();
+  } else if (target.matches('input[type="checkbox"]')) {
+    console.log('im herw');
+    _modules_renderPage__WEBPACK_IMPORTED_MODULE_0__["default"].checkbox('target');
+  }
+});
 })();
 
 /******/ })()
 ;
-//# sourceMappingURL=bundleac043b5ceba9b7c2d5d2.js.map
+//# sourceMappingURL=bundle2805875b561a25bcf1ce.js.map
