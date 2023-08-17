@@ -5,6 +5,7 @@ import '../styles/style.css';
 const createTaskElement = (task) => {
   const taskElement = document.createElement('li');
   taskElement.className = `task ${task.completed ? 'completed' : ''}`;
+  taskElement.draggable = true;
   taskElement.innerHTML = `
       <input type="checkbox" class="completed-checkbox" ${task.completed ? 'checked' : ''}>
       <span class="task-description">${task.index}. ${task.description}</span>

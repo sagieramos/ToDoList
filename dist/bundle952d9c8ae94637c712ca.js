@@ -1,6 +1,15 @@
 /******/ (() => { // webpackBootstrap
-/******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
+
+/***/ "./src/modules/drag.js":
+/*!*****************************!*\
+  !*** ./src/modules/drag.js ***!
+  \*****************************/
+/***/ (() => {
+
+
+
+/***/ }),
 
 /***/ "./src/modules/renderPage.js":
 /*!***********************************!*\
@@ -8,13 +17,22 @@
   \***********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _svg_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./svg.js */ "./src/modules/svg.js");
-/* harmony import */ var _styles_style_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styles/style.css */ "./src/styles/style.css");
+/* harmony import */ var _assets_threedot_svg__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../assets/threedot.svg */ "./src/assets/threedot.svg");
+/* harmony import */ var _drag__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./drag */ "./src/modules/drag.js");
+/* harmony import */ var _drag__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_drag__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _styles_style_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../styles/style.css */ "./src/styles/style.css");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
@@ -22,34 +40,33 @@ function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _ty
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 
 
+
 var createTaskElement = function createTaskElement(task) {
   var taskElement = document.createElement('li');
   taskElement.className = "task ".concat(task.completed ? 'completed' : '');
-  taskElement.innerHTML = "\n      <input type=\"checkbox\" class=\"completed-checkbox\" ".concat(task.completed ? 'checked' : '', ">\n      <span class=\"task-description\">").concat(task.description, "</span>\n      <button class=\"treeDots\">").concat(_svg_js__WEBPACK_IMPORTED_MODULE_0__.treeDots, "</button>\n  ");
+  taskElement.draggable = true;
+  taskElement.innerHTML = "\n      <input type=\"checkbox\" class=\"completed-checkbox\" ".concat(task.completed ? 'checked' : '', ">\n      <span class=\"task-description\">").concat(task.index, ". ").concat(task.description, "</span>\n      <img class=\"treeDots\" src=\"").concat(_assets_threedot_svg__WEBPACK_IMPORTED_MODULE_0__, "\" alt=\"\">\n  ");
+  taskElement.addEventListener('dragstart', function (e) {
+    return _drag__WEBPACK_IMPORTED_MODULE_1___default().handleDragStart(e, index);
+  });
+  taskElement.addEventListener('dragover', (_drag__WEBPACK_IMPORTED_MODULE_1___default().handleDragOver));
+  taskElement.addEventListener('drop', function (e) {
+    return _drag__WEBPACK_IMPORTED_MODULE_1___default().handleDrop(e, index);
+  });
   return taskElement;
 };
 var TaskManager = /*#__PURE__*/function () {
-  function TaskManager() {
+  function TaskManager(container) {
     _classCallCheck(this, TaskManager);
     this.tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    this.taskList = document.getElementById('task-list');
+    this.taskList = document.querySelector("".concat(container));
+    this.activeIndex = null;
     this.renderTasks();
   }
   _createClass(TaskManager, [{
     key: "saveTasksToLocalStorage",
     value: function saveTasksToLocalStorage() {
       localStorage.setItem('tasks', JSON.stringify(this.tasks));
-    }
-  }, {
-    key: "renderTasks",
-    value: function renderTasks() {
-      var _this = this;
-      this.taskList.innerHTML = '';
-      this.tasks.forEach(function (task, index) {
-        var taskElement = createTaskElement(task, index);
-        _this.taskList.appendChild(taskElement);
-      });
-      this.saveTasksToLocalStorage();
     }
   }, {
     key: "updateTaskIndexes",
@@ -59,13 +76,52 @@ var TaskManager = /*#__PURE__*/function () {
       });
     }
   }, {
-    key: "checkbox",
-    value: function checkbox(target) {
-      if (target.checked) {
-        target.parentNode.classList.add('completed');
-      } else {
-        target.parentNode.classList.add('completed');
-      }
+    key: "renderTasks",
+    value: function renderTasks() {
+      var _this = this;
+      this.updateTaskIndexes();
+      this.taskList.innerHTML = '';
+      this.tasks.forEach(function (task) {
+        var taskElement = createTaskElement(task);
+        _this.taskList.appendChild(taskElement);
+      });
+      this.saveTasksToLocalStorage();
+    }
+  }, {
+    key: "updateTaskCompletion",
+    value: function updateTaskCompletion(target) {
+      var targetClass = target.className;
+      var targetIndex = _toConsumableArray(document.querySelectorAll(".".concat(targetClass))).indexOf(target);
+      this.tasks[targetIndex].completed = target.checked;
+      this.saveTasksToLocalStorage();
+      this.renderTasks();
+    }
+  }, {
+    key: "updateTaskDescription",
+    value: function updateTaskDescription(value) {
+      this.tasks[this.activeIndex].description = value;
+      this.renderTasks();
+    }
+  }, {
+    key: "clearCompleted",
+    value: function clearCompleted() {
+      var completedCheckboxes = _toConsumableArray(document.querySelectorAll('.completed-checkbox'));
+      var newTasks = this.tasks.filter(function (task, index) {
+        return !completedCheckboxes[index].checked;
+      });
+      this.tasks = newTasks;
+      this.renderTasks();
+    }
+  }, {
+    key: "getIndex",
+    value: function getIndex(index) {
+      this.activeIndex = index;
+    }
+  }, {
+    key: "editDescription",
+    value: function editDescription(index) {
+      this.activeIndex = index;
+      return "\n      <form id=\"todo-edit\" action=\"#\">\n      <input id=\"edit-input\" name=\"edit\" type=\"text\" maxlength=\"50\" minlength=\"1\" placeholder=\"".concat(index + 1, ". ").concat(this.tasks[index].description, "\" required></input>\n      </form>\n    ");
     }
   }, {
     key: "addTask",
@@ -80,16 +136,8 @@ var TaskManager = /*#__PURE__*/function () {
     }
   }, {
     key: "deleteTask",
-    value: function deleteTask(index) {
-      this.tasks.splice(index, 1);
-      this.updateTaskIndexes();
-      this.renderTasks();
-    }
-  }, {
-    key: "updateTaskCompletion",
-    value: function updateTaskCompletion(index, completed) {
-      this.tasks[index].completed = completed;
-      this.saveTasksToLocalStorage();
+    value: function deleteTask() {
+      this.tasks.splice(this.activeIndex, 1);
       this.renderTasks();
     }
   }]);
@@ -99,29 +147,13 @@ var TaskManager = /*#__PURE__*/function () {
 
 /***/ }),
 
-/***/ "./src/modules/svg.js":
-/*!****************************!*\
-  !*** ./src/modules/svg.js ***!
-  \****************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   refresh: () => (/* binding */ refresh),
-/* harmony export */   treeDots: () => (/* binding */ treeDots)
-/* harmony export */ });
-var treeDots = "\n<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-three-dots-vertical\" viewBox=\"0 0 16 16\">\n<path d=\"M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z\"/>\n</svg>";
-var refresh = "\n<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M20.944 12.979c-.489 4.509-4.306 8.021-8.944 8.021-2.698 \n0-5.112-1.194-6.763-3.075l1.245-1.633c1.283 1.645 3.276 2.708 5.518 2.708 3.526 0 6.444-2.624 6.923-6.021h-2.923l4-5.25 4 5.25h-3.056zm-15.864-1.979c.487-3.387 \n3.4-6 6.92-6 2.237 0 4.228 1.059 5.51 2.698l1.244-1.632c-1.65-1.876-4.061-3.066-6.754-3.066-4.632 0-8.443 3.501-8.941 8h-3.059l4 5.25 4-5.25h-2.92z\"/></svg>";
-
-
-/***/ }),
-
 /***/ "./node_modules/css-loader/dist/cjs.js!./src/styles/style.css":
 /*!********************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js!./src/styles/style.css ***!
   \********************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -151,11 +183,16 @@ ___CSS_LOADER_EXPORT___.push([module.id, `body {
 
 .container {
   max-width: 600px;
+  min-width: 300px;
+  width: 86%;
   margin: 60px auto;
   padding: 0 12px;
   background-color: #fff;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .headline {
@@ -193,10 +230,6 @@ li.task {
   cursor: pointer;
 }
 
-.treeDots svg {
-  fill: #8b8a8a;
-}
-
 li.task.completed {
   text-decoration: line-through;
 }
@@ -218,15 +251,16 @@ input {
   background: none;
   border: none;
   text-align: center;
-  width: 100%;
   padding: 10px 0;
   color: #8b8a8a;
+  cursor: pointer;
+  margin: 0 auto;
 }
 
 input::placeholder {
   font-style: italic;
 }
-`, "",{"version":3,"sources":["webpack://./src/styles/style.css"],"names":[],"mappings":"AAAA;EACE,8BAA8B;EAC9B,SAAS;EACT,UAAU;EACV,yBAAyB;EACzB,sBAAsB;AACxB;;AAEA;EACE,eAAe;EACf,gBAAgB;EAChB,cAAc;AAChB;;AAEA;EACE,gBAAgB;EAChB,iBAAiB;EACjB,eAAe;EACf,sBAAsB;EACtB,kBAAkB;EAClB,uCAAuC;AACzC;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,eAAe;EACf,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,eAAe;AACjB;;AAEA;EACE,SAAS;AACX;;AAEA;EACE,gBAAgB;EAChB,UAAU;AACZ;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,aAAa;EACb,6BAA6B;AAC/B;;AAEA;EACE,iBAAiB;EACjB,YAAY;EACZ,gBAAgB;EAChB,eAAe;AACjB;;AAEA;EACE,aAAa;AACf;;AAEA;EACE,6BAA6B;AAC/B;;AAEA;EACE,kBAAkB;AACpB;;AAEA;EACE,YAAY;EACZ,aAAa;AACf;;AAEA;EACE,gBAAgB;AAClB;;AAEA;EACE,gBAAgB;EAChB,YAAY;EACZ,kBAAkB;EAClB,WAAW;EACX,eAAe;EACf,cAAc;AAChB;;AAEA;EACE,kBAAkB;AACpB","sourcesContent":["body {\n  font-family: Arial, sans-serif;\n  margin: 0;\n  padding: 0;\n  background-color: #f4f4f4;\n  box-sizing: border-box;\n}\n\n* {\n  font-size: 16px;\n  font-weight: 400;\n  color: #3d3d3d;\n}\n\n.container {\n  max-width: 600px;\n  margin: 60px auto;\n  padding: 0 12px;\n  background-color: #fff;\n  border-radius: 5px;\n  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\n}\n\n.headline {\n  display: flex;\n  justify-content: space-between;\n  padding: 24px 0;\n  align-items: center;\n}\n\n#refreshSvg {\n  fill: #8b8a8a;\n  cursor: pointer;\n}\n\nh1 {\n  margin: 0;\n}\n\nul {\n  list-style: none;\n  padding: 0;\n}\n\nli.task {\n  display: flex;\n  align-items: center;\n  padding: 10px;\n  border-bottom: 1px solid #eee;\n}\n\n.treeDots {\n  margin-left: auto;\n  border: none;\n  background: none;\n  cursor: pointer;\n}\n\n.treeDots svg {\n  fill: #8b8a8a;\n}\n\nli.task.completed {\n  text-decoration: line-through;\n}\n\n.completed-checkbox {\n  margin-right: 10px;\n}\n\ninput {\n  border: none;\n  outline: none;\n}\n\n#task-list {\n  margin-bottom: 0;\n}\n\n#clearCompleted {\n  background: none;\n  border: none;\n  text-align: center;\n  width: 100%;\n  padding: 10px 0;\n  color: #8b8a8a;\n}\n\ninput::placeholder {\n  font-style: italic;\n}\n"],"sourceRoot":""}]);
+`, "",{"version":3,"sources":["webpack://./src/styles/style.css"],"names":[],"mappings":"AAAA;EACE,8BAA8B;EAC9B,SAAS;EACT,UAAU;EACV,yBAAyB;EACzB,sBAAsB;AACxB;;AAEA;EACE,eAAe;EACf,gBAAgB;EAChB,cAAc;AAChB;;AAEA;EACE,gBAAgB;EAChB,gBAAgB;EAChB,UAAU;EACV,iBAAiB;EACjB,eAAe;EACf,sBAAsB;EACtB,kBAAkB;EAClB,uCAAuC;EACvC,aAAa;EACb,sBAAsB;EACtB,uBAAuB;AACzB;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,eAAe;EACf,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,eAAe;AACjB;;AAEA;EACE,SAAS;AACX;;AAEA;EACE,gBAAgB;EAChB,UAAU;AACZ;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,aAAa;EACb,6BAA6B;AAC/B;;AAEA;EACE,iBAAiB;EACjB,YAAY;EACZ,gBAAgB;EAChB,eAAe;AACjB;;AAEA;EACE,6BAA6B;AAC/B;;AAEA;EACE,kBAAkB;AACpB;;AAEA;EACE,YAAY;EACZ,aAAa;AACf;;AAEA;EACE,gBAAgB;AAClB;;AAEA;EACE,gBAAgB;EAChB,YAAY;EACZ,kBAAkB;EAClB,eAAe;EACf,cAAc;EACd,eAAe;EACf,cAAc;AAChB;;AAEA;EACE,kBAAkB;AACpB","sourcesContent":["body {\n  font-family: Arial, sans-serif;\n  margin: 0;\n  padding: 0;\n  background-color: #f4f4f4;\n  box-sizing: border-box;\n}\n\n* {\n  font-size: 16px;\n  font-weight: 400;\n  color: #3d3d3d;\n}\n\n.container {\n  max-width: 600px;\n  min-width: 300px;\n  width: 86%;\n  margin: 60px auto;\n  padding: 0 12px;\n  background-color: #fff;\n  border-radius: 5px;\n  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n}\n\n.headline {\n  display: flex;\n  justify-content: space-between;\n  padding: 24px 0;\n  align-items: center;\n}\n\n#refreshSvg {\n  fill: #8b8a8a;\n  cursor: pointer;\n}\n\nh1 {\n  margin: 0;\n}\n\nul {\n  list-style: none;\n  padding: 0;\n}\n\nli.task {\n  display: flex;\n  align-items: center;\n  padding: 10px;\n  border-bottom: 1px solid #eee;\n}\n\n.treeDots {\n  margin-left: auto;\n  border: none;\n  background: none;\n  cursor: pointer;\n}\n\nli.task.completed {\n  text-decoration: line-through;\n}\n\n.completed-checkbox {\n  margin-right: 10px;\n}\n\ninput {\n  border: none;\n  outline: none;\n}\n\n#task-list {\n  margin-bottom: 0;\n}\n\n#clearCompleted {\n  background: none;\n  border: none;\n  text-align: center;\n  padding: 10px 0;\n  color: #8b8a8a;\n  cursor: pointer;\n  margin: 0 auto;\n}\n\ninput::placeholder {\n  font-style: italic;\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -239,6 +273,7 @@ input::placeholder {
   \*****************************************************/
 /***/ ((module) => {
 
+"use strict";
 
 
 /*
@@ -333,6 +368,7 @@ module.exports = function (cssWithMappingToString) {
   \************************************************************/
 /***/ ((module) => {
 
+"use strict";
 
 
 module.exports = function (item) {
@@ -358,6 +394,7 @@ module.exports = function (item) {
   \******************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -412,6 +449,7 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
   \****************************************************************************/
 /***/ ((module) => {
 
+"use strict";
 
 
 var stylesInDOM = [];
@@ -505,6 +543,7 @@ module.exports = function (list, options) {
   \********************************************************************/
 /***/ ((module) => {
 
+"use strict";
 
 
 var memo = {};
@@ -548,6 +587,7 @@ module.exports = insertBySelector;
   \**********************************************************************/
 /***/ ((module) => {
 
+"use strict";
 
 
 /* istanbul ignore next  */
@@ -567,6 +607,7 @@ module.exports = insertStyleElement;
   \**********************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
+"use strict";
 
 
 /* istanbul ignore next  */
@@ -586,6 +627,7 @@ module.exports = setAttributesWithoutAttributes;
   \***************************************************************/
 /***/ ((module) => {
 
+"use strict";
 
 
 /* istanbul ignore next  */
@@ -656,6 +698,7 @@ module.exports = domAPI;
   \*********************************************************************/
 /***/ ((module) => {
 
+"use strict";
 
 
 /* istanbul ignore next  */
@@ -670,6 +713,39 @@ function styleTagTransform(css, styleElement) {
   }
 }
 module.exports = styleTagTransform;
+
+/***/ }),
+
+/***/ "./src/assets/delete.svg":
+/*!*******************************!*\
+  !*** ./src/assets/delete.svg ***!
+  \*******************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+module.exports = __webpack_require__.p + "65f3a9a91c2706853ca4.svg";
+
+/***/ }),
+
+/***/ "./src/assets/refresh.svg":
+/*!********************************!*\
+  !*** ./src/assets/refresh.svg ***!
+  \********************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+module.exports = __webpack_require__.p + "1420e0e1ab32d2557172.svg";
+
+/***/ }),
+
+/***/ "./src/assets/threedot.svg":
+/*!*********************************!*\
+  !*** ./src/assets/threedot.svg ***!
+  \*********************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+module.exports = __webpack_require__.p + "c795f4c16c886a041cbb.svg";
 
 /***/ })
 
@@ -724,6 +800,18 @@ module.exports = styleTagTransform;
 /******/ 		};
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/global */
+/******/ 	(() => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
@@ -740,6 +828,29 @@ module.exports = styleTagTransform;
 /******/ 		};
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/publicPath */
+/******/ 	(() => {
+/******/ 		var scriptUrl;
+/******/ 		if (__webpack_require__.g.importScripts) scriptUrl = __webpack_require__.g.location + "";
+/******/ 		var document = __webpack_require__.g.document;
+/******/ 		if (!scriptUrl && document) {
+/******/ 			if (document.currentScript)
+/******/ 				scriptUrl = document.currentScript.src;
+/******/ 			if (!scriptUrl) {
+/******/ 				var scripts = document.getElementsByTagName("script");
+/******/ 				if(scripts.length) {
+/******/ 					var i = scripts.length - 1;
+/******/ 					while (i > -1 && !scriptUrl) scriptUrl = scripts[i--].src;
+/******/ 				}
+/******/ 			}
+/******/ 		}
+/******/ 		// When supporting browsers where an automatic publicPath is not supported you must specify an output.publicPath manually via configuration
+/******/ 		// or pass an empty string ("") and set the __webpack_public_path__ variable from your code to use your own logic.
+/******/ 		if (!scriptUrl) throw new Error("Automatic publicPath is not supported in this browser");
+/******/ 		scriptUrl = scriptUrl.replace(/#.*$/, "").replace(/\?.*$/, "").replace(/\/[^\/]+$/, "/");
+/******/ 		__webpack_require__.p = scriptUrl;
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/nonce */
 /******/ 	(() => {
 /******/ 		__webpack_require__.nc = undefined;
@@ -747,45 +858,76 @@ module.exports = styleTagTransform;
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+// This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
+"use strict";
 /*!**********************!*\
   !*** ./src/index.js ***!
   \**********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _modules_renderPage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/renderPage */ "./src/modules/renderPage.js");
+/* harmony import */ var _modules_renderPage_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/renderPage.js */ "./src/modules/renderPage.js");
+/* harmony import */ var _assets_refresh_svg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./assets/refresh.svg */ "./src/assets/refresh.svg");
+/* harmony import */ var _assets_delete_svg__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./assets/delete.svg */ "./src/assets/delete.svg");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 
-var taskManager = new _modules_renderPage__WEBPACK_IMPORTED_MODULE_0__["default"]();
-var todoForm = document.getElementById('todoForm');
-var clearCompletedButton = document.getElementById('clearCompleted');
-console.log('Todo form:', todoForm);
-console.log('Clear completed button:', clearCompletedButton);
-todoForm.addEventListener('submit', function (event) {
-  event.preventDefault();
-  var input = todoForm.querySelector('input[type="text"]');
-  var description = input.value.trim();
-  if (description !== '') {
-    taskManager.addTask(description);
-    input.value = '';
+
+
+var taskManager = new _modules_renderPage_js__WEBPACK_IMPORTED_MODULE_0__["default"]('#task-list');
+var refresh = document.getElementById('refreshSvg');
+var menu = document.getElementById('menu');
+var editInput = false;
+refresh.src = _assets_refresh_svg__WEBPACK_IMPORTED_MODULE_1__;
+window.addEventListener('submit', function (e) {
+  e.preventDefault();
+  var target = e.target;
+  if (target.matches('#todoForm')) {
+    var input = document.querySelector('#enter-description');
+    var description = input.value.trim();
+    if (description !== '') {
+      taskManager.addTask(description);
+      input.value = '';
+    }
+  } else if (target.matches('#todo-edit')) {
+    var _input = document.querySelector('#edit-input');
+    taskManager.updateTaskDescription(_input.value.trim());
   }
 });
 window.addEventListener('click', function (e) {
   var target = e.target;
-  console.log(target);
   if (target.matches('#clearCompleted')) {
-    console.log('Clear completed button clicked ' + target);
-    taskManager.tasks = taskManager.tasks.filter(function (task) {
-      return !task.completed;
-    });
-    taskManager.updateTaskIndexes();
+    taskManager.clearCompleted();
+  } else if (target.matches('.completed-checkbox')) {
+    taskManager.updateTaskCompletion(target);
+  } else if (target.matches('#treeDots-delete')) {
+    taskManager.deleteTask();
+    editInput = true;
+  } else if (target.matches('*:not(#edit-input)') && editInput) {
     taskManager.renderTasks();
-  } else if (target.matches('input[type="checkbox"]')) {
-    console.log('im herw');
-    _modules_renderPage__WEBPACK_IMPORTED_MODULE_0__["default"].checkbox('target');
+    editInput = false;
+  } else if (target.matches('.treeDots')) {
+    var index = _toConsumableArray(document.querySelectorAll('.treeDots')).indexOf(target);
+    target.src = _assets_delete_svg__WEBPACK_IMPORTED_MODULE_2__;
+    target.id = 'treeDots-delete';
+    taskManager.getIndex(index);
+    editInput = true;
+  } else if (target.matches('.delete-task')) {
+    taskManager.deleteTask();
+    while (menu.firstChild) {
+      menu.firstChild.remove();
+    }
+  } else if (target.matches('.task-description')) {
+    editInput = true;
+    var _index = _toConsumableArray(document.querySelectorAll('.task-description')).indexOf(target);
+    target.innerHTML = taskManager.editDescription(_index);
   }
 });
 })();
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle2805875b561a25bcf1ce.js.map
+//# sourceMappingURL=bundle952d9c8ae94637c712ca.js.map
