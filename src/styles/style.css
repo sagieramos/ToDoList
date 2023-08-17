@@ -16,7 +16,7 @@ body {
   max-width: 600px;
   min-width: 300px;
   width: 86%;
-  margin: 60px auto;
+  margin: 12px auto;
   padding: 0 12px;
   background-color: #fff;
   border-radius: 5px;
@@ -24,6 +24,20 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+#confirm-edit {
+  background-color: #3498db;
+  border: 1px solid #dcdcdc;
+  border-radius: 5px;
+  color: #fff;
+  padding: 10px 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+  margin-top: 6px;
 }
 
 .headline {
@@ -48,16 +62,17 @@ ul {
 }
 
 li.task {
-  display: flex;
-  align-items: center;
-  padding: 10px;
+  padding: 10px 25px;
   border-bottom: 1px solid #eee;
+  position: relative;
 }
 
 .treeDots {
-  margin-left: auto;
   border: none;
   background: none;
+  position: absolute;
+  right: 0;
+  top: 10px;
   cursor: pointer;
 }
 
@@ -67,6 +82,8 @@ li.task.completed {
 
 .completed-checkbox {
   margin-right: 10px;
+  position: absolute;
+  left: 0;
 }
 
 input {
@@ -86,6 +103,23 @@ input {
   color: #8b8a8a;
   cursor: pointer;
   margin: 0 auto;
+}
+
+#edit-input {
+  width: 100%;
+  overflow-wrap: break-word;
+  overflow: auto;
+  resize: vertical;
+  padding: 8px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  border-color: #3498db;
+  border-radius: 5px;
+  background: #fff;
+}
+
+.task-description {
+  width: 90%;
 }
 
 input::placeholder {
