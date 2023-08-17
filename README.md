@@ -18,6 +18,7 @@
 - [📖 Fullstack Development ](#-fullstack-development-)
   - [🛠  Built With ](#--built-with-)
     - [Key Features ](#key-features-)
+  - [🚀 Live Demo](#live-demo)
   - [💻 Getting Started ](#-getting-started-)
     - [Prerequisites](#prerequisites)
     - [Setup](#setup)
@@ -46,6 +47,12 @@
 - By default new tasks have the property completed set to false and the property index set to the value of the new array length (i.e. if you're adding a 5th task to the list, the index of that task is equal to 5).
 - Deleting a task update all remaining items' indexes, so they represent the current list order and are unique(i.e. if you're deleting the first task index 1 from the list, the index of the next task(2) is set to 1).
 - All changes to the To Do List is saved in local storage.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## 🚀 Live Demo <a name="live-demo"></a>
+
+- [Live Demo Link](https://sagieramos.github.io/ToDoList/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
