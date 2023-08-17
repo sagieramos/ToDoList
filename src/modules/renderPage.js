@@ -2,22 +2,34 @@ import threedots from '../assets/threedot.svg'
 
 import '../styles/style.css';
 
+const createMenu = (task, index) => {
+  const modal = document.createElement('article');
+  modal.className = 'menu';
+  modal.innerHTML = `
+  <form id="menu-form" action="#">
+    <input class="menu-input" type="text" maxlength="50" minlength="1" required>
+    <button type="submit">Edit</button>
+  </form>
+  <button class="delete-task">Delete Task<button>
+  `
+  document.getElementById('menu').appendChild(modal);
+}
+
 const createTaskElement = (task) => {
   const taskElement = document.createElement('li');
   taskElement.className = `task ${task.completed ? 'completed' : ''}`;
   taskElement.innerHTML = `
       <input type="checkbox" class="completed-checkbox" ${task.completed ? 'checked' : ''}>
-      <span class="index">${task.index}.</span>
-      <span class="task-description">${task.description}</span>
+      <span class="task-description">${task.index}. ${task.description}</span>
       <img class="treeDots" src="${threedots}" alt="">
   `;
   return taskElement;
 };
 class TaskManager {
-    constructor() {
+    constructor(container) {
         this.tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-        this.taskList = document.getElementById('task-list');
-        
+        this.taskList = document.querySelector(`${container}`);
+        this.activeIndex = null; 
         this.renderTasks();
     }
     
@@ -34,8 +46,8 @@ class TaskManager {
       this.updateTaskIndexes();
         this.taskList.innerHTML = '';
         
-        this.tasks.forEach((task, index) => {
-            const taskElement = createTaskElement(task, index);
+        this.tasks.forEach((task) => {
+            const taskElement = createTaskElement(task);
             this.taskList.appendChild(taskElement);
         });
         
@@ -49,6 +61,11 @@ class TaskManager {
       this.saveTasksToLocalStorage();
       this.renderTasks();
   }
+
+  updateTaskDescription(value) {
+    this.tasks[this.activeIndex].description = value
+    this.renderTasks();
+  }
     
     clearCompleted() {
       const completedCheckboxes = [...document.querySelectorAll('.completed-checkbox')];
@@ -57,6 +74,19 @@ class TaskManager {
       });
       this.tasks = newTasks;
       this.renderTasks();
+    }
+
+    getIndex(index) {
+      this.activeIndex = index;
+    }
+
+    editDescription(index) {
+      this.activeIndex = index;     
+      return `
+      <form id="todo-edit" action="#">
+      <input id="edit-input" name="edit" type="text" maxlength="50" minlength="1" placeholder="${index+1}. ${this.tasks[index].description}" required></input>
+      </form>
+    `
     }
 
     addTask(description) {
@@ -69,12 +99,10 @@ class TaskManager {
         this.renderTasks();
     }
     
-    deleteTask(index) {
-        this.tasks.splice(index, 1);
+    deleteTask() {
+        this.tasks.splice(this.activeIndex, 1);
         this.renderTasks();
     }
-    
-
 }
 
-export default TaskManager;
+export { TaskManager, createMenu } ;
