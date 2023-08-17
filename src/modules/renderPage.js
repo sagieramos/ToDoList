@@ -1,19 +1,6 @@
-import threedots from '../assets/threedot.svg'
+import threedots from '../assets/threedot.svg';
 
 import '../styles/style.css';
-
-const createMenu = (task, index) => {
-  const modal = document.createElement('article');
-  modal.className = 'menu';
-  modal.innerHTML = `
-  <form id="menu-form" action="#">
-    <input class="menu-input" type="text" maxlength="50" minlength="1" required>
-    <button type="submit">Edit</button>
-  </form>
-  <button class="delete-task">Delete Task<button>
-  `
-  document.getElementById('menu').appendChild(modal);
-}
 
 const createTaskElement = (task) => {
   const taskElement = document.createElement('li');
@@ -26,83 +13,82 @@ const createTaskElement = (task) => {
   return taskElement;
 };
 class TaskManager {
-    constructor(container) {
-        this.tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-        this.taskList = document.querySelector(`${container}`);
-        this.activeIndex = null; 
-        this.renderTasks();
-    }
-    
-    saveTasksToLocalStorage() {
-        localStorage.setItem('tasks', JSON.stringify(this.tasks));
-    }
-
-    updateTaskIndexes() {
-      this.tasks.forEach((task, index) => {
-          task.index = index + 1;
-      });
+  constructor(container) {
+    this.tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    this.taskList = document.querySelector(`${container}`);
+    this.activeIndex = null;
+    this.renderTasks();
   }
-    renderTasks() {
-      this.updateTaskIndexes();
-        this.taskList.innerHTML = '';
-        
-        this.tasks.forEach((task) => {
-            const taskElement = createTaskElement(task);
-            this.taskList.appendChild(taskElement);
-        });
-        
-        this.saveTasksToLocalStorage();
-    }
-    
-    updateTaskCompletion(target) {
-      const targetClass = target.className;
-      const targetIndex = [...document.querySelectorAll(`.${targetClass}`)].indexOf(target);
-      this.tasks[targetIndex].completed = target.checked;
-      this.saveTasksToLocalStorage();
-      this.renderTasks();
+
+  saveTasksToLocalStorage() {
+    localStorage.setItem('tasks', JSON.stringify(this.tasks));
+  }
+
+  updateTaskIndexes() {
+    this.tasks.forEach((task, index) => {
+      task.index = index + 1;
+    });
+  }
+
+  renderTasks() {
+    this.updateTaskIndexes();
+    this.taskList.innerHTML = '';
+
+    this.tasks.forEach((task) => {
+      const taskElement = createTaskElement(task);
+      this.taskList.appendChild(taskElement);
+    });
+
+    this.saveTasksToLocalStorage();
+  }
+
+  updateTaskCompletion(target) {
+    const targetClass = target.className;
+    const targetIndex = [...document.querySelectorAll(`.${targetClass}`)].indexOf(target);
+    this.tasks[targetIndex].completed = target.checked;
+    this.saveTasksToLocalStorage();
+    this.renderTasks();
   }
 
   updateTaskDescription(value) {
-    this.tasks[this.activeIndex].description = value
+    this.tasks[this.activeIndex].description = value;
     this.renderTasks();
   }
-    
-    clearCompleted() {
-      const completedCheckboxes = [...document.querySelectorAll('.completed-checkbox')];
-      const newTasks = this.tasks.filter((task, index) => {
-          return !completedCheckboxes[index].checked;
-      });
-      this.tasks = newTasks;
-      this.renderTasks();
-    }
 
-    getIndex(index) {
-      this.activeIndex = index;
-    }
+  clearCompleted() {
+    const completedCheckboxes = [...document.querySelectorAll('.completed-checkbox')];
+    const newTasks = this.tasks.filter((task, index) => !completedCheckboxes[index].checked);
+    this.tasks = newTasks;
+    this.renderTasks();
+  }
 
-    editDescription(index) {
-      this.activeIndex = index;     
-      return `
+  getIndex(index) {
+    this.activeIndex = index;
+  }
+
+  editDescription(index) {
+    this.activeIndex = index;
+    return `
       <form id="todo-edit" action="#">
-      <input id="edit-input" name="edit" type="text" maxlength="50" minlength="1" placeholder="${index+1}. ${this.tasks[index].description}" required></input>
+      <input id="edit-input" name="edit" type="text" maxlength="50" minlength="1" placeholder="${index + 1}. ${this.tasks[index].description}" required></input>
       </form>
-    `
-    }
+    `;
+  }
 
-    addTask(description) {
-        const newTask = {
-            description: description,
-            completed: false,
-            index: this.tasks.length + 1,
-        };
-        this.tasks.push(newTask);
-        this.renderTasks();
-    }
-    
-    deleteTask() {
-        this.tasks.splice(this.activeIndex, 1);
-        this.renderTasks();
-    }
+  addTask(description) {
+    const newTask = {
+      description,
+      completed: false,
+      index: this.tasks.length + 1,
+    };
+    this.tasks.push(newTask);
+    this.renderTasks();
+  }
+
+  deleteTask() {
+    this.tasks.splice(this.activeIndex, 1);
+    this.renderTasks();
+  }
 }
 
-export { TaskManager, createMenu } ;
+export default TaskManager;
