@@ -1,4 +1,4 @@
-import { handleFormSubmission, handleClicks } from "./modules/handleEvent";
+import { handleFormSubmission, handleClicks } from './modules/handleEvent.js';
 
 document.addEventListener('submit', handleFormSubmission);
 document.addEventListener('click', handleClicks);

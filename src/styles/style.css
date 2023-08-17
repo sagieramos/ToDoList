@@ -48,16 +48,17 @@ ul {
 }
 
 li.task {
-  display: flex;
-  align-items: center;
-  padding: 10px;
+  padding: 10px 25px;
   border-bottom: 1px solid #eee;
+  position: relative;
 }
 
 .treeDots {
-  margin-left: auto;
   border: none;
   background: none;
+  position: absolute;
+  right: 0;
+  top: 10px;
   cursor: pointer;
 }
 
@@ -67,6 +68,8 @@ li.task.completed {
 
 .completed-checkbox {
   margin-right: 10px;
+  position: absolute;
+  left: 0;
 }
 
 input {
@@ -86,6 +89,17 @@ input {
   color: #8b8a8a;
   cursor: pointer;
   margin: 0 auto;
+}
+
+#edit-input {
+  width: 100%;
+  overflow-wrap: break-word;
+  overflow: auto;
+  resize: vertical;
+}
+
+.task-description {
+  width: 90%;
 }
 
 input::placeholder {
