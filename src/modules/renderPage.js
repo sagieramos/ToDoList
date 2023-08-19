@@ -5,6 +5,7 @@ import '../styles/style.css';
 const createTaskElement = (task) => {
   const taskElement = document.createElement('li');
   taskElement.className = `task ${task.completed ? 'completed' : ''}`;
+  taskElement.setAttribute('draggable', 'true');
   taskElement.innerHTML = `
       <input type="checkbox" class="completed-checkbox" ${task.completed ? 'checked' : ''}>
       <span class="task-description">${task.index}. ${task.description}</span>
@@ -18,6 +19,31 @@ class TaskManager {
     this.taskList = document.querySelector(`${container}`);
     this.activeIndex = null;
     this.renderTasks();
+    this.initializeDragAndDrop();
+  }
+
+  initializeDragAndDrop() {
+    this.taskList.addEventListener('dragstart', (e) => {
+      // Set data to be transferred during drag
+      e.dataTransfer.setData('text/plain', e.target.dataset.index);
+    });
+
+    this.taskList.addEventListener('dragover', (e) => {
+      e.preventDefault();
+    });
+
+    this.taskList.addEventListener('drop', (e) => {
+      e.preventDefault();
+      const sourceIndex = parseInt(e.dataTransfer.getData('text/plain'));
+      const targetIndex = parseInt(e.target.dataset.index);
+      
+      if (!isNaN(sourceIndex) && !isNaN(targetIndex)) {
+        // Rearrange tasks based on drag and drop
+        const [draggedTask] = this.tasks.splice(sourceIndex, 1);
+        this.tasks.splice(targetIndex, 0, draggedTask);
+        this.renderTasks();
+      }
+    });
   }
 
   saveTasksToLocalStorage() {
@@ -34,8 +60,9 @@ class TaskManager {
     this.updateTaskIndexes();
     this.taskList.innerHTML = '';
 
-    this.tasks.forEach((task) => {
+    this.tasks.forEach((task, index) => {
       const taskElement = createTaskElement(task);
+      taskElement.setAttribute('data-index', index);
       this.taskList.appendChild(taskElement);
     });
 
