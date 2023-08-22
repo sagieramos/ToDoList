@@ -4,7 +4,6 @@ import deleteImg from '../assets/delete.svg';
 
 const taskManager = new TaskManager('#task-list');
 const refresh = document.getElementById('refreshSvg');
-const menu = document.getElementById('menu');
 let editInput = false;
 
 refresh.src = refreshImg;
@@ -31,8 +30,8 @@ const handleClicks = (e) => {
   const { target } = e;
   if (target.matches('#confirm-edit')) {
     e.preventDefault();
-    const input = document.querySelector('#edit-input');
-    taskManager.updateTaskDescription(input.value.trim());
+    const { value } = document.querySelector('#edit-input');
+    taskManager.updateTaskDescription(value.trim());
   }
   if (target.matches('#clearCompleted')) {
     taskManager.clearCompleted();
@@ -52,9 +51,6 @@ const handleClicks = (e) => {
     editInput = true;
   } else if (target.matches('.delete-task')) {
     taskManager.deleteTask();
-    while (menu.firstChild) {
-      menu.firstChild.remove();
-    }
   } else if (target.matches('.task-description')) {
     editInput = true;
     const index = [...document.querySelectorAll('.task-description')].indexOf(target);

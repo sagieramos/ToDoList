@@ -8,7 +8,7 @@ const createTaskElement = (task) => {
   taskElement.innerHTML = `
       <input type="checkbox" class="completed-checkbox" ${task.completed ? 'checked' : ''}>
       <span class="task-description">${task.index}. ${task.description}</span>
-      <img class="treeDots" src="${threedots}" alt="">
+      <img class="treeDots" src="${threedots}" alt="verticalDot">
   `;
   return taskElement;
 };
@@ -33,11 +33,13 @@ class TaskManager {
   renderTasks() {
     this.updateTaskIndexes();
     this.taskList.innerHTML = '';
+    const fragment = document.createDocumentFragment();
 
     this.tasks.forEach((task) => {
-      const taskElement = createTaskElement(task);
-      this.taskList.appendChild(taskElement);
+      fragment.appendChild(createTaskElement(task));
     });
+
+    this.taskList.appendChild(fragment);
 
     this.saveTasksToLocalStorage();
   }
@@ -70,8 +72,9 @@ class TaskManager {
     this.activeIndex = index;
     return `
       <form id="todo-edit" action="#">
-      <textarea id="edit-input" cols="30" rows="10" id="edit-input" name="edit" type="text" maxlength="500" minlength="1" required>${this.tasks[index].description}</textarea>
-      <button id="confirm-edit">Submit</button>
+        <textarea id="edit-input" cols="30" rows="10" name="edit" type="text" maxlength="500" minlength="1" required>${this.tasks[index].description}
+        </textarea>
+        <button id="confirm-edit">Submit</button>
       </form>
     `;
   }
