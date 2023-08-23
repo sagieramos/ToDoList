@@ -1,4 +1,4 @@
-import TaskManager from './renderPage.js';
+import TaskManager from './util.js';
 import refreshImg from '../assets/refresh.svg';
 import deleteImg from '../assets/delete.svg';
 

@@ -13,7 +13,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   handleClicks: () => (/* binding */ handleClicks),
 /* harmony export */   handleFormSubmission: () => (/* binding */ handleFormSubmission)
 /* harmony export */ });
-/* harmony import */ var _renderPage_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./renderPage.js */ "./src/modules/renderPage.js");
+/* harmony import */ var _util_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util.js */ "./src/modules/util.js");
 /* harmony import */ var _assets_refresh_svg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../assets/refresh.svg */ "./src/assets/refresh.svg");
 /* harmony import */ var _assets_delete_svg__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../assets/delete.svg */ "./src/assets/delete.svg");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
@@ -25,9 +25,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
 
-var taskManager = new _renderPage_js__WEBPACK_IMPORTED_MODULE_0__["default"]('#task-list');
+var taskManager = new _util_js__WEBPACK_IMPORTED_MODULE_0__["default"]('#task-list');
 var refresh = document.getElementById('refreshSvg');
-var menu = document.getElementById('menu');
 var editInput = false;
 refresh.src = _assets_refresh_svg__WEBPACK_IMPORTED_MODULE_1__;
 var handleFormSubmission = function handleFormSubmission(e) {
@@ -49,8 +48,9 @@ var handleClicks = function handleClicks(e) {
   var target = e.target;
   if (target.matches('#confirm-edit')) {
     e.preventDefault();
-    var input = document.querySelector('#edit-input');
-    taskManager.updateTaskDescription(input.value.trim());
+    var _document$querySelect = document.querySelector('#edit-input'),
+      value = _document$querySelect.value;
+    taskManager.updateTaskDescription(value.trim());
   }
   if (target.matches('#clearCompleted')) {
     taskManager.clearCompleted();
@@ -70,9 +70,6 @@ var handleClicks = function handleClicks(e) {
     editInput = true;
   } else if (target.matches('.delete-task')) {
     taskManager.deleteTask();
-    while (menu.firstChild) {
-      menu.firstChild.remove();
-    }
   } else if (target.matches('.task-description')) {
     editInput = true;
     var _index = _toConsumableArray(document.querySelectorAll('.task-description')).indexOf(target);
@@ -83,10 +80,10 @@ var handleClicks = function handleClicks(e) {
 
 /***/ }),
 
-/***/ "./src/modules/renderPage.js":
-/*!***********************************!*\
-  !*** ./src/modules/renderPage.js ***!
-  \***********************************/
+/***/ "./src/modules/util.js":
+/*!*****************************!*\
+  !*** ./src/modules/util.js ***!
+  \*****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -112,7 +109,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 var createTaskElement = function createTaskElement(task) {
   var taskElement = document.createElement('li');
   taskElement.className = "task ".concat(task.completed ? 'completed' : '');
-  taskElement.innerHTML = "\n      <input type=\"checkbox\" class=\"completed-checkbox\" ".concat(task.completed ? 'checked' : '', ">\n      <span class=\"task-description\">").concat(task.index, ". ").concat(task.description, "</span>\n      <img class=\"treeDots\" src=\"").concat(_assets_threedot_svg__WEBPACK_IMPORTED_MODULE_0__, "\" alt=\"\">\n  ");
+  taskElement.innerHTML = "\n      <input type=\"checkbox\" class=\"completed-checkbox\" ".concat(task.completed ? 'checked' : '', ">\n      <span class=\"task-description\">").concat(task.index, ". ").concat(task.description, "</span>\n      <img class=\"treeDots\" src=\"").concat(_assets_threedot_svg__WEBPACK_IMPORTED_MODULE_0__, "\" alt=\"verticalDot\">\n  ");
   return taskElement;
 };
 var TaskManager = /*#__PURE__*/function () {
@@ -138,13 +135,13 @@ var TaskManager = /*#__PURE__*/function () {
   }, {
     key: "renderTasks",
     value: function renderTasks() {
-      var _this = this;
       this.updateTaskIndexes();
       this.taskList.innerHTML = '';
+      var fragment = document.createDocumentFragment();
       this.tasks.forEach(function (task) {
-        var taskElement = createTaskElement(task);
-        _this.taskList.appendChild(taskElement);
+        fragment.appendChild(createTaskElement(task));
       });
+      this.taskList.appendChild(fragment);
       this.saveTasksToLocalStorage();
     }
   }, {
@@ -181,7 +178,7 @@ var TaskManager = /*#__PURE__*/function () {
     key: "editDescription",
     value: function editDescription(index) {
       this.activeIndex = index;
-      return "\n      <form id=\"todo-edit\" action=\"#\">\n      <textarea id=\"edit-input\" cols=\"30\" rows=\"10\" id=\"edit-input\" name=\"edit\" type=\"text\" maxlength=\"500\" minlength=\"1\" required>".concat(this.tasks[index].description, "</textarea>\n      <button id=\"confirm-edit\">Submit</button>\n      </form>\n    ");
+      return "\n      <form id=\"todo-edit\" action=\"#\">\n        <textarea id=\"edit-input\" cols=\"30\" rows=\"10\" name=\"edit\" type=\"text\" maxlength=\"500\" minlength=\"1\" required>".concat(this.tasks[index].description, "\n        </textarea>\n        <button id=\"confirm-edit\">Submit</button>\n      </form>\n    ");
     }
   }, {
     key: "addTask",
@@ -953,4 +950,4 @@ document.addEventListener('click', _modules_handleEvent_js__WEBPACK_IMPORTED_MOD
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle6d0246caecab45fff6bc.js.map
+//# sourceMappingURL=bundle6d7499e968cd0d0dbd71.js.map
