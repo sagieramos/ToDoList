@@ -178,7 +178,7 @@ var TaskManager = /*#__PURE__*/function () {
     key: "editDescription",
     value: function editDescription(index) {
       this.activeIndex = index;
-      return "\n      <form id=\"todo-edit\" action=\"#\">\n        <textarea id=\"edit-input\" cols=\"30\" rows=\"10\" name=\"edit\" type=\"text\" maxlength=\"500\" minlength=\"1\" required>".concat(this.tasks[index].description, "\n        </textarea>\n        <button id=\"confirm-edit\">Submit</button>\n      </form>\n    ");
+      return "\n      <form id=\"todo-edit\" action=\"#\">\n        <textarea id=\"edit-input\" cols=\"30\" rows=\"10\" name=\"edit\" type=\"text\" maxlength=\"500\" minlength=\"1\" required>".concat(this.tasks[index].description, "</textarea>\n        <button id=\"confirm-edit\">Submit</button>\n      </form>\n    ");
     }
   }, {
     key: "addTask",
@@ -950,4 +950,4 @@ document.addEventListener('click', _modules_handleEvent_js__WEBPACK_IMPORTED_MOD
 
 /******/ })()
 ;
-//# sourceMappingURL=bundlef7dcee12a4dfcda7cd49.js.map
+//# sourceMappingURL=bundle4eb3b47ac30090c472f6.js.map
