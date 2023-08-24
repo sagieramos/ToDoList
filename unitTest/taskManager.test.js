@@ -114,7 +114,18 @@ describe('TaskManager', () => {
       expect(taskManager.tasks[1].description).toBe('Task 2');
     });
 
-    //
+      test('Tasks re-postion"', () => {
+      let lastChild = taskManager.tasks.length - 1;
+      
+      expect(taskManager.tasks[lastChild].index).toBe(4);
+      // Deleting "Task 3"
+      taskManager.getIndex(2);
+      taskManager.deleteTask();
+
+      lastChild = taskManager.tasks.length - 1;
+
+      expect(taskManager.tasks[lastChild].index).toBe(3);
+    });
 
   });
 });
