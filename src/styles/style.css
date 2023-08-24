@@ -126,7 +126,6 @@ input::placeholder {
   font-style: italic;
 }
 
-
 .icons li {
   background: none repeat scroll 0 0 black;
   height: 3px;
@@ -149,8 +148,3 @@ input::placeholder {
 #task-delete {
   color: red;
 }
-
-
-
-
-
