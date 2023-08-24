@@ -109,7 +109,7 @@ describe('TaskManager', () => {
       expect(taskManager.tasks[1].completed).toBe(false);
     });
 
-    test('Contents in task-list is "Task 1" and "Task 2 respectively"', () => {
+    test('Contents in task-list are "Task 1" and "Task 2 respectively"', () => {
       expect(taskManager.tasks[0].description).toBe('Task 1');
       expect(taskManager.tasks[1].description).toBe('Task 2');
     });
