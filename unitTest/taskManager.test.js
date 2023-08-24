@@ -62,11 +62,14 @@ describe('TaskManager', () => {
       });
 
       expect(taskManager.tasks[0].index).toBe(1);
+      expect(taskManager.tasks[0].description.completed).toBe(false);
       expect(taskManager.tasks[0].description.description).toBe('Task 1');
       expect(taskManager.tasks[1].index).toBe(2);
       expect(taskManager.tasks[1].description.description).toBe('Task 2');
+      expect(taskManager.tasks[1].description.completed).toBe(true);
       expect(taskManager.tasks[2].index).toBe(3);
       expect(taskManager.tasks[2].description.description).toBe('Task 3');
+      expect(taskManager.tasks[2].description.completed).toBe(false);
     });
   });
 
