@@ -1,12 +1,7 @@
-import TaskManager from './renderPage.js';
-import refreshImg from '../assets/refresh.svg';
-import deleteImg from '../assets/delete.svg';
+import { TaskManager, taskBtn } from './util.js';
 
 const taskManager = new TaskManager('#task-list');
-const refresh = document.getElementById('refreshSvg');
 let editInput = false;
-
-refresh.src = refreshImg;
 
 const handleFormSubmission = (e) => {
   e.preventDefault();
@@ -37,16 +32,16 @@ const handleClicks = (e) => {
     taskManager.clearCompleted();
   } else if (target.matches('.completed-checkbox')) {
     taskManager.updateTaskCompletion(target);
-  } else if (target.matches('#treeDots-delete')) {
+  } else if (target.matches('#task-delete')) {
     taskManager.deleteTask();
     editInput = true;
   } else if (target.matches('*:not(#edit-input)') && editInput) {
     taskManager.renderTasks();
     editInput = false;
-  } else if (target.matches('.treeDots')) {
-    const index = [...document.querySelectorAll('.treeDots')].indexOf(target);
-    target.src = deleteImg;
-    target.id = 'treeDots-delete';
+  } else if (target.matches('.dropbtn')) {
+    const index = [...document.querySelectorAll('.dropbtn')].indexOf(target);
+    target.parentNode.innerHTML = taskBtn.delete;
+    target.id = 'task-delete';
     taskManager.getIndex(index);
     editInput = true;
   } else if (target.matches('.delete-task')) {

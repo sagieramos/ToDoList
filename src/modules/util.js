@@ -1,6 +1,10 @@
-import threedots from '../assets/threedot.svg';
-
-import '../styles/style.css';
+const taskBtn = {
+  menu: `
+<ul class="dropbtn icons btn-right">
+  <li></li><li></li><li></li>
+</ul>`,
+  delete: '<i id="task-delete" class="material-icons">delete</i>',
+};
 
 const createTaskElement = (task) => {
   const taskElement = document.createElement('li');
@@ -8,13 +12,21 @@ const createTaskElement = (task) => {
   taskElement.innerHTML = `
       <input type="checkbox" class="completed-checkbox" ${task.completed ? 'checked' : ''}>
       <span class="task-description">${task.index}. ${task.description}</span>
-      <img class="treeDots" src="${threedots}" alt="verticalDot">
+      <div class="task-menu-btn">${taskBtn.menu}</div>
   `;
   return taskElement;
 };
 class TaskManager {
   constructor(container) {
-    this.tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    const tasksJSON = localStorage.getItem('tasks');
+    this.tasks = [];
+    if (tasksJSON && tasksJSON.trim() !== '') {
+      try {
+        this.tasks = JSON.parse(tasksJSON);
+      } catch (error) {
+        this.tasks = [];
+      }
+    }
     this.taskList = document.querySelector(`${container}`);
     this.activeIndex = null;
     this.renderTasks();
@@ -95,4 +107,4 @@ class TaskManager {
   }
 }
 
-export default TaskManager;
+export { TaskManager, taskBtn };
