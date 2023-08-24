@@ -125,3 +125,32 @@ input {
 input::placeholder {
   font-style: italic;
 }
+
+
+.icons li {
+  background: none repeat scroll 0 0 black;
+  height: 3px;
+  width: 3px;
+  line-height: 0;
+  list-style: none outside none;
+  margin-right: 5px;
+  margin-top: 3px;
+  vertical-align: top;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.task-menu-btn {
+  right: 0;
+  position: absolute;
+  top: 10px;
+}
+
+#task-delete {
+  color: red;
+}
+
+
+
+
+

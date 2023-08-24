@@ -14,8 +14,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   handleFormSubmission: () => (/* binding */ handleFormSubmission)
 /* harmony export */ });
 /* harmony import */ var _util_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util.js */ "./src/modules/util.js");
-/* harmony import */ var _assets_refresh_svg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../assets/refresh.svg */ "./src/assets/refresh.svg");
-/* harmony import */ var _assets_delete_svg__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../assets/delete.svg */ "./src/assets/delete.svg");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -23,12 +21,8 @@ function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symb
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 
-
-
-var taskManager = new _util_js__WEBPACK_IMPORTED_MODULE_0__["default"]('#task-list');
-var refresh = document.getElementById('refreshSvg');
+var taskManager = new _util_js__WEBPACK_IMPORTED_MODULE_0__.TaskManager('#task-list');
 var editInput = false;
-refresh.src = _assets_refresh_svg__WEBPACK_IMPORTED_MODULE_1__;
 var handleFormSubmission = function handleFormSubmission(e) {
   e.preventDefault();
   var target = e.target;
@@ -56,16 +50,16 @@ var handleClicks = function handleClicks(e) {
     taskManager.clearCompleted();
   } else if (target.matches('.completed-checkbox')) {
     taskManager.updateTaskCompletion(target);
-  } else if (target.matches('#treeDots-delete')) {
+  } else if (target.matches('#task-delete')) {
     taskManager.deleteTask();
     editInput = true;
   } else if (target.matches('*:not(#edit-input)') && editInput) {
     taskManager.renderTasks();
     editInput = false;
-  } else if (target.matches('.treeDots')) {
-    var index = _toConsumableArray(document.querySelectorAll('.treeDots')).indexOf(target);
-    target.src = _assets_delete_svg__WEBPACK_IMPORTED_MODULE_2__;
-    target.id = 'treeDots-delete';
+  } else if (target.matches('.dropbtn')) {
+    var index = _toConsumableArray(document.querySelectorAll('.dropbtn')).indexOf(target);
+    target.parentNode.innerHTML = _util_js__WEBPACK_IMPORTED_MODULE_0__.taskBtn["delete"];
+    target.id = 'task-delete';
     taskManager.getIndex(index);
     editInput = true;
   } else if (target.matches('.delete-task')) {
@@ -88,10 +82,10 @@ var handleClicks = function handleClicks(e) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   TaskManager: () => (/* binding */ TaskManager),
+/* harmony export */   taskBtn: () => (/* binding */ taskBtn)
 /* harmony export */ });
-/* harmony import */ var _assets_threedot_svg__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../assets/threedot.svg */ "./src/assets/threedot.svg");
-/* harmony import */ var _styles_style_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styles/style.css */ "./src/styles/style.css");
+/* harmony import */ var _styles_style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../styles/style.css */ "./src/styles/style.css");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -105,11 +99,14 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 
-
+var taskBtn = {
+  menu: "\n<ul class=\"dropbtn icons btn-right\">\n  <li></li>\n  <li></li>\n  <li></li>\n</ul>",
+  "delete": '<i id="task-delete" class="material-icons">delete</i>'
+};
 var createTaskElement = function createTaskElement(task) {
   var taskElement = document.createElement('li');
   taskElement.className = "task ".concat(task.completed ? 'completed' : '');
-  taskElement.innerHTML = "\n      <input type=\"checkbox\" class=\"completed-checkbox\" ".concat(task.completed ? 'checked' : '', ">\n      <span class=\"task-description\">").concat(task.index, ". ").concat(task.description, "</span>\n      <img class=\"treeDots\" src=\"").concat(_assets_threedot_svg__WEBPACK_IMPORTED_MODULE_0__, "\" alt=\"verticalDot\">\n  ");
+  taskElement.innerHTML = "\n      <input type=\"checkbox\" class=\"completed-checkbox\" ".concat(task.completed ? 'checked' : '', ">\n      <span class=\"task-description\">").concat(task.index, ". ").concat(task.description, "</span>\n      <div class=\"task-menu-btn\">").concat(taskBtn.menu, "</div>\n  ");
   return taskElement;
 };
 var TaskManager = /*#__PURE__*/function () {
@@ -200,7 +197,7 @@ var TaskManager = /*#__PURE__*/function () {
   }]);
   return TaskManager;
 }();
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (TaskManager);
+
 
 /***/ }),
 
@@ -350,7 +347,36 @@ input {
 input::placeholder {
   font-style: italic;
 }
-`, "",{"version":3,"sources":["webpack://./src/styles/style.css"],"names":[],"mappings":"AAAA;EACE,8BAA8B;EAC9B,SAAS;EACT,UAAU;EACV,yBAAyB;EACzB,sBAAsB;AACxB;;AAEA;EACE,eAAe;EACf,gBAAgB;EAChB,cAAc;AAChB;;AAEA;EACE,gBAAgB;EAChB,gBAAgB;EAChB,UAAU;EACV,iBAAiB;EACjB,eAAe;EACf,sBAAsB;EACtB,kBAAkB;EAClB,uCAAuC;EACvC,aAAa;EACb,sBAAsB;EACtB,uBAAuB;AACzB;;AAEA;EACE,yBAAyB;EACzB,yBAAyB;EACzB,kBAAkB;EAClB,WAAW;EACX,kBAAkB;EAClB,yCAAyC;EACzC,kBAAkB;EAClB,qBAAqB;EACrB,qBAAqB;EACrB,sCAAsC;EACtC,eAAe;AACjB;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,eAAe;EACf,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,eAAe;AACjB;;AAEA;EACE,SAAS;AACX;;AAEA;EACE,gBAAgB;EAChB,UAAU;AACZ;;AAEA;EACE,kBAAkB;EAClB,6BAA6B;EAC7B,kBAAkB;AACpB;;AAEA;EACE,YAAY;EACZ,gBAAgB;EAChB,kBAAkB;EAClB,QAAQ;EACR,SAAS;EACT,eAAe;AACjB;;AAEA;EACE,6BAA6B;AAC/B;;AAEA;EACE,kBAAkB;EAClB,kBAAkB;EAClB,OAAO;AACT;;AAEA;EACE,YAAY;EACZ,aAAa;AACf;;AAEA;EACE,gBAAgB;AAClB;;AAEA;EACE,gBAAgB;EAChB,YAAY;EACZ,kBAAkB;EAClB,eAAe;EACf,cAAc;EACd,eAAe;EACf,cAAc;AAChB;;AAEA;EACE,WAAW;EACX,yBAAyB;EACzB,cAAc;EACd,gBAAgB;EAChB,YAAY;EACZ,8BAA8B;EAC9B,eAAe;EACf,qBAAqB;EACrB,kBAAkB;EAClB,gBAAgB;AAClB;;AAEA;EACE,UAAU;AACZ;;AAEA;EACE,kBAAkB;AACpB","sourcesContent":["body {\n  font-family: Arial, sans-serif;\n  margin: 0;\n  padding: 0;\n  background-color: #f4f4f4;\n  box-sizing: border-box;\n}\n\n* {\n  font-size: 16px;\n  font-weight: 400;\n  color: #3d3d3d;\n}\n\n.container {\n  max-width: 600px;\n  min-width: 300px;\n  width: 86%;\n  margin: 12px auto;\n  padding: 0 12px;\n  background-color: #fff;\n  border-radius: 5px;\n  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n}\n\n#confirm-edit {\n  background-color: #3498db;\n  border: 1px solid #dcdcdc;\n  border-radius: 5px;\n  color: #fff;\n  padding: 10px 20px;\n  font-family: Arial, Helvetica, sans-serif;\n  text-align: center;\n  text-decoration: none;\n  display: inline-block;\n  transition: background-color 0.3s ease;\n  margin-top: 6px;\n}\n\n.headline {\n  display: flex;\n  justify-content: space-between;\n  padding: 24px 0;\n  align-items: center;\n}\n\n#refreshSvg {\n  fill: #8b8a8a;\n  cursor: pointer;\n}\n\nh1 {\n  margin: 0;\n}\n\nul {\n  list-style: none;\n  padding: 0;\n}\n\nli.task {\n  padding: 10px 25px;\n  border-bottom: 1px solid #eee;\n  position: relative;\n}\n\n.treeDots {\n  border: none;\n  background: none;\n  position: absolute;\n  right: 0;\n  top: 10px;\n  cursor: pointer;\n}\n\nli.task.completed {\n  text-decoration: line-through;\n}\n\n.completed-checkbox {\n  margin-right: 10px;\n  position: absolute;\n  left: 0;\n}\n\ninput {\n  border: none;\n  outline: none;\n}\n\n#task-list {\n  margin-bottom: 0;\n}\n\n#clearCompleted {\n  background: none;\n  border: none;\n  text-align: center;\n  padding: 10px 0;\n  color: #8b8a8a;\n  cursor: pointer;\n  margin: 0 auto;\n}\n\n#edit-input {\n  width: 100%;\n  overflow-wrap: break-word;\n  overflow: auto;\n  resize: vertical;\n  padding: 8px;\n  font-family: Arial, sans-serif;\n  font-size: 16px;\n  border-color: #3498db;\n  border-radius: 5px;\n  background: #fff;\n}\n\n.task-description {\n  width: 90%;\n}\n\ninput::placeholder {\n  font-style: italic;\n}\n"],"sourceRoot":""}]);
+
+
+.icons li {
+  background: none repeat scroll 0 0 black;
+  height: 3px;
+  width: 3px;
+  line-height: 0;
+  list-style: none outside none;
+  margin-right: 5px;
+  margin-top: 3px;
+  vertical-align: top;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.task-menu-btn {
+  right: 0;
+  position: absolute;
+  top: 10px;
+}
+
+#task-delete {
+  color: red;
+}
+
+
+
+
+
+`, "",{"version":3,"sources":["webpack://./src/styles/style.css"],"names":[],"mappings":"AAAA;EACE,8BAA8B;EAC9B,SAAS;EACT,UAAU;EACV,yBAAyB;EACzB,sBAAsB;AACxB;;AAEA;EACE,eAAe;EACf,gBAAgB;EAChB,cAAc;AAChB;;AAEA;EACE,gBAAgB;EAChB,gBAAgB;EAChB,UAAU;EACV,iBAAiB;EACjB,eAAe;EACf,sBAAsB;EACtB,kBAAkB;EAClB,uCAAuC;EACvC,aAAa;EACb,sBAAsB;EACtB,uBAAuB;AACzB;;AAEA;EACE,yBAAyB;EACzB,yBAAyB;EACzB,kBAAkB;EAClB,WAAW;EACX,kBAAkB;EAClB,yCAAyC;EACzC,kBAAkB;EAClB,qBAAqB;EACrB,qBAAqB;EACrB,sCAAsC;EACtC,eAAe;AACjB;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,eAAe;EACf,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,eAAe;AACjB;;AAEA;EACE,SAAS;AACX;;AAEA;EACE,gBAAgB;EAChB,UAAU;AACZ;;AAEA;EACE,kBAAkB;EAClB,6BAA6B;EAC7B,kBAAkB;AACpB;;AAEA;EACE,YAAY;EACZ,gBAAgB;EAChB,kBAAkB;EAClB,QAAQ;EACR,SAAS;EACT,eAAe;AACjB;;AAEA;EACE,6BAA6B;AAC/B;;AAEA;EACE,kBAAkB;EAClB,kBAAkB;EAClB,OAAO;AACT;;AAEA;EACE,YAAY;EACZ,aAAa;AACf;;AAEA;EACE,gBAAgB;AAClB;;AAEA;EACE,gBAAgB;EAChB,YAAY;EACZ,kBAAkB;EAClB,eAAe;EACf,cAAc;EACd,eAAe;EACf,cAAc;AAChB;;AAEA;EACE,WAAW;EACX,yBAAyB;EACzB,cAAc;EACd,gBAAgB;EAChB,YAAY;EACZ,8BAA8B;EAC9B,eAAe;EACf,qBAAqB;EACrB,kBAAkB;EAClB,gBAAgB;AAClB;;AAEA;EACE,UAAU;AACZ;;AAEA;EACE,kBAAkB;AACpB;;;AAGA;EACE,wCAAwC;EACxC,WAAW;EACX,UAAU;EACV,cAAc;EACd,6BAA6B;EAC7B,iBAAiB;EACjB,eAAe;EACf,mBAAmB;EACnB,kBAAkB;EAClB,oBAAoB;AACtB;;AAEA;EACE,QAAQ;EACR,kBAAkB;EAClB,SAAS;AACX;;AAEA;EACE,UAAU;AACZ","sourcesContent":["body {\n  font-family: Arial, sans-serif;\n  margin: 0;\n  padding: 0;\n  background-color: #f4f4f4;\n  box-sizing: border-box;\n}\n\n* {\n  font-size: 16px;\n  font-weight: 400;\n  color: #3d3d3d;\n}\n\n.container {\n  max-width: 600px;\n  min-width: 300px;\n  width: 86%;\n  margin: 12px auto;\n  padding: 0 12px;\n  background-color: #fff;\n  border-radius: 5px;\n  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n}\n\n#confirm-edit {\n  background-color: #3498db;\n  border: 1px solid #dcdcdc;\n  border-radius: 5px;\n  color: #fff;\n  padding: 10px 20px;\n  font-family: Arial, Helvetica, sans-serif;\n  text-align: center;\n  text-decoration: none;\n  display: inline-block;\n  transition: background-color 0.3s ease;\n  margin-top: 6px;\n}\n\n.headline {\n  display: flex;\n  justify-content: space-between;\n  padding: 24px 0;\n  align-items: center;\n}\n\n#refreshSvg {\n  fill: #8b8a8a;\n  cursor: pointer;\n}\n\nh1 {\n  margin: 0;\n}\n\nul {\n  list-style: none;\n  padding: 0;\n}\n\nli.task {\n  padding: 10px 25px;\n  border-bottom: 1px solid #eee;\n  position: relative;\n}\n\n.treeDots {\n  border: none;\n  background: none;\n  position: absolute;\n  right: 0;\n  top: 10px;\n  cursor: pointer;\n}\n\nli.task.completed {\n  text-decoration: line-through;\n}\n\n.completed-checkbox {\n  margin-right: 10px;\n  position: absolute;\n  left: 0;\n}\n\ninput {\n  border: none;\n  outline: none;\n}\n\n#task-list {\n  margin-bottom: 0;\n}\n\n#clearCompleted {\n  background: none;\n  border: none;\n  text-align: center;\n  padding: 10px 0;\n  color: #8b8a8a;\n  cursor: pointer;\n  margin: 0 auto;\n}\n\n#edit-input {\n  width: 100%;\n  overflow-wrap: break-word;\n  overflow: auto;\n  resize: vertical;\n  padding: 8px;\n  font-family: Arial, sans-serif;\n  font-size: 16px;\n  border-color: #3498db;\n  border-radius: 5px;\n  background: #fff;\n}\n\n.task-description {\n  width: 90%;\n}\n\ninput::placeholder {\n  font-style: italic;\n}\n\n\n.icons li {\n  background: none repeat scroll 0 0 black;\n  height: 3px;\n  width: 3px;\n  line-height: 0;\n  list-style: none outside none;\n  margin-right: 5px;\n  margin-top: 3px;\n  vertical-align: top;\n  border-radius: 50%;\n  pointer-events: none;\n}\n\n.task-menu-btn {\n  right: 0;\n  position: absolute;\n  top: 10px;\n}\n\n#task-delete {\n  color: red;\n}\n\n\n\n\n\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -795,36 +821,6 @@ function styleTagTransform(css, styleElement) {
 }
 module.exports = styleTagTransform;
 
-/***/ }),
-
-/***/ "./src/assets/delete.svg":
-/*!*******************************!*\
-  !*** ./src/assets/delete.svg ***!
-  \*******************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-module.exports = __webpack_require__.p + "65f3a9a91c2706853ca4.svg";
-
-/***/ }),
-
-/***/ "./src/assets/refresh.svg":
-/*!********************************!*\
-  !*** ./src/assets/refresh.svg ***!
-  \********************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-module.exports = __webpack_require__.p + "1420e0e1ab32d2557172.svg";
-
-/***/ }),
-
-/***/ "./src/assets/threedot.svg":
-/*!*********************************!*\
-  !*** ./src/assets/threedot.svg ***!
-  \*********************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-module.exports = __webpack_require__.p + "c795f4c16c886a041cbb.svg";
-
 /***/ })
 
 /******/ 	});
@@ -878,18 +874,6 @@ module.exports = __webpack_require__.p + "c795f4c16c886a041cbb.svg";
 /******/ 		};
 /******/ 	})();
 /******/ 	
-/******/ 	/* webpack/runtime/global */
-/******/ 	(() => {
-/******/ 		__webpack_require__.g = (function() {
-/******/ 			if (typeof globalThis === 'object') return globalThis;
-/******/ 			try {
-/******/ 				return this || new Function('return this')();
-/******/ 			} catch (e) {
-/******/ 				if (typeof window === 'object') return window;
-/******/ 			}
-/******/ 		})();
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
@@ -904,29 +888,6 @@ module.exports = __webpack_require__.p + "c795f4c16c886a041cbb.svg";
 /******/ 			}
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/publicPath */
-/******/ 	(() => {
-/******/ 		var scriptUrl;
-/******/ 		if (__webpack_require__.g.importScripts) scriptUrl = __webpack_require__.g.location + "";
-/******/ 		var document = __webpack_require__.g.document;
-/******/ 		if (!scriptUrl && document) {
-/******/ 			if (document.currentScript)
-/******/ 				scriptUrl = document.currentScript.src;
-/******/ 			if (!scriptUrl) {
-/******/ 				var scripts = document.getElementsByTagName("script");
-/******/ 				if(scripts.length) {
-/******/ 					var i = scripts.length - 1;
-/******/ 					while (i > -1 && !scriptUrl) scriptUrl = scripts[i--].src;
-/******/ 				}
-/******/ 			}
-/******/ 		}
-/******/ 		// When supporting browsers where an automatic publicPath is not supported you must specify an output.publicPath manually via configuration
-/******/ 		// or pass an empty string ("") and set the __webpack_public_path__ variable from your code to use your own logic.
-/******/ 		if (!scriptUrl) throw new Error("Automatic publicPath is not supported in this browser");
-/******/ 		scriptUrl = scriptUrl.replace(/#.*$/, "").replace(/\?.*$/, "").replace(/\/[^\/]+$/, "/");
-/******/ 		__webpack_require__.p = scriptUrl;
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/nonce */
@@ -950,4 +911,4 @@ document.addEventListener('click', _modules_handleEvent_js__WEBPACK_IMPORTED_MOD
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle6d7499e968cd0d0dbd71.js.map
+//# sourceMappingURL=bundle612f70f71bcc92338a14.js.map
