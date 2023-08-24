@@ -83,4 +83,18 @@ describe('TaskManager', () => {
       expect(document.querySelectorAll('.task')).toHaveLength(5);
     });
   });
+
+  describe('delete', () => {
+    test('Remove a task from localstorage', () => {
+
+      taskManager.addTask('Task 1');
+      taskManager.addTask('Task 2');
+      taskManager.addTask('Task 3');
+ 
+      taskManager.getIndex(1);
+      taskManager.deleteTask();
+
+      expect(document.querySelectorAll('.task')).toHaveLength(4);
+    });
+  });
 });

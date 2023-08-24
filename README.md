@@ -1,7 +1,5 @@
 <a name="readme-top"></a>
 
-
-
 <div align="center">
 
   <img src="screenshoot1.png" alt="overview" width="auto"  height="auto" />
@@ -18,7 +16,7 @@
 - [📖 Fullstack Development ](#-fullstack-development-)
   - [🛠  Built With ](#--built-with-)
     - [Key Features ](#key-features-)
-  - [🚀 Live Demo](#live-demo)
+  - [🚀 Live Demo ](#-live-demo-)
   - [💻 Getting Started ](#-getting-started-)
     - [Prerequisites](#prerequisites)
     - [Setup](#setup)
