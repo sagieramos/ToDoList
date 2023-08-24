@@ -95,6 +95,13 @@ To run the project, execute the following command:
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## 👥 Collaborators <a name="collaborators"></a>
+👤 ***Hydaline**
+- GitHub: [@hydaline-code](https://github.com/hydaline-code)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
 
 ## 🔭 Future Features <a name="future-features"></a>
 
