@@ -126,6 +126,22 @@ describe('TaskManager', () => {
 
       expect(taskManager.tasks[lastChild].index).toBe(3);
     });
-
+    test('Tasks re-postion. all tasks in the correct position', () => {
+      const { tasks } = taskManager;
+      expect(tasks.length).toBe(4);
+      tasks.forEach((task, index) => {
+      expect(task.index).toBe(index + 1);
+      })
+      // Deleting "Task 2"
+      taskManager.getIndex(1);
+      taskManager.deleteTask();
+      expect(tasks.length).toBe(3);
+      tasks.forEach((task, index) => {
+      expect(task.index).toBe(index + 1);
+      
+      })
+      
+      });
+    
   });
 });
