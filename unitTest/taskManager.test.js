@@ -103,7 +103,6 @@ describe('TaskManager', () => {
   });
 
   describe('Test part 2', () => {
-
     test('Status in the task-list is true and false respectively', () => {
       expect(taskManager.tasks[0].completed).toBe(true);
       expect(taskManager.tasks[1].completed).toBe(false);
@@ -114,9 +113,9 @@ describe('TaskManager', () => {
       expect(taskManager.tasks[1].description).toBe('Task 2');
     });
 
-      test('Tasks re-postion"', () => {
+    test('Tasks re-postion"', () => {
       let lastChild = taskManager.tasks.length - 1;
-      
+
       expect(taskManager.tasks[lastChild].index).toBe(4);
       // Deleting "Task 3"
       taskManager.getIndex(2);
@@ -128,20 +127,22 @@ describe('TaskManager', () => {
     });
     test('Tasks re-postion. all tasks in the correct position', () => {
       const { tasks } = taskManager;
+
       expect(tasks.length).toBe(4);
+
       tasks.forEach((task, index) => {
-      expect(task.index).toBe(index + 1);
-      })
+        expect(task.index).toBe(index + 1);
+      });
+
       // Deleting "Task 2"
       taskManager.getIndex(1);
       taskManager.deleteTask();
+
       expect(tasks.length).toBe(3);
+
       tasks.forEach((task, index) => {
-      expect(task.index).toBe(index + 1);
-      
-      })
-      
+        expect(task.index).toBe(index + 1);
       });
-    
+    });
   });
 });
